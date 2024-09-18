@@ -234,6 +234,42 @@ function lib.break_long_text(x, y)
     return a
 end
 
+--------------------------------------------------------------------------------
+
+function lib.lua_to_json(x)
+    lib.types(x, "table")
+    local cjson = require "cjson"
+    local json_string = cjson.encode(x)
+    return json_string
+end
+
+--------------------------------------------------------------------------------
+
+function lib.json_to_lua(x)
+    lib.types(x, "string")
+    local cjson = require "cjson"
+    local tbl = cjson.decode(x)
+    return tbl
+end
+
+--------------------------------------------------------------------------------
+
+function lib.do_db_get(filename)
+    lib.types(filename, "string")
+    local tbl = {}
+    local func = lib.compose(lib.do_get_file_content, lib.json_to_lua)
+    local tbl = func(filename)
+    return tbl
+end
+
+--------------------------------------------------------------------------------
+
+function lib.do_db_post(filename, x)
+    lib.types(filename, "string")
+    lib.types(x, "table")
+    local json_string = lib.lua_to_json(x)
+    lib.do_write_file(filename, json_string)
+end
 
 --------------------------------------------------------------------------------
 return lib
