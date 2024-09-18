@@ -1,0 +1,6 @@
+rm -r export
+mkdir -p ./export/
+cp ./main.lua ./export/
+cp ./lib.lua ./export/
+cp ./config.lua ./export/
+cp -R ./pkgs/share/lua/5.4/. ./export/
