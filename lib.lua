@@ -272,4 +272,19 @@ function lib.do_db_post(filename, x)
 end
 
 --------------------------------------------------------------------------------
+
+function lib.xml_to_table(a)
+    local xml2lua = require("xml2lua")
+	local handler = require("xmlhandler.tree"):new()
+    local parser = xml2lua.parser(handler)
+    if type(a) ~= "string" or not a:find ("<.+>") then
+    		tbl = { a .. " Input of xml_to_table(a) was not valid XML" }
+    else
+    		parser:parse(a)
+    		tbl = handler.root
+	end
+    return tbl
+end
+
+--------------------------------------------------------------------------------
 return lib
