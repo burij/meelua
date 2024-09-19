@@ -12,7 +12,7 @@ pkgs.mkShell {
 	];
 
 	shellHook = ''
-		wget -O lib.lua https://raw.githubusercontent.com/burij/milua/main/lib.lua
+		wget -O lib.lua https://raw.githubusercontent.com/burij/meelua/main/lib.lua
 		alias run='lua main.lua'
 		alias test='lua draft.lua'
 		luarocks install inspect --tree ./pkgs
