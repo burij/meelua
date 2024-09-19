@@ -16,8 +16,7 @@ pkgs.mkShell {
 		alias run='lua main.lua'
 		alias test='lua draft.lua'
 		luarocks install inspect --tree ./pkgs
-    		luarocks install lua-cjson --tree ./pkgs
-
+    	luarocks install dkjson --tree ./pkgs
 		export LUA_PATH="./pkgs/share/lua/5.4/?.lua;./share/lua/5.4/?/init.lua;$LUA_PATH"
 		export LUA_CPATH="./pkgs/lib/lua/5.4/?.so;$LUA_CPATH"
 	'';

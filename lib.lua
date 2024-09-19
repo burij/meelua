@@ -238,23 +238,23 @@ end
 
 function lib.lua_to_json(x)
     lib.types(x, "table")
-    local cjson = require "cjson"
-    local json_string = cjson.encode(x)
-    return json_string
+    local parser = require "dkjson"
+    local str = parser.encode(x)
+    return str
 end
 
 --------------------------------------------------------------------------------
 
 function lib.json_to_lua(x)
     lib.types(x, "string")
-    local cjson = require "cjson"
-    local tbl = cjson.decode(x)
+    local parser = require "dkjson"
+    local tbl = parser.decode(x, 1, nil, nil)
     return tbl
 end
 
 --------------------------------------------------------------------------------
 
-function lib.do_db_get(filename)
+function lib.db_request(filename)
     lib.types(filename, "string")
     local tbl = {}
     local func = lib.compose(lib.do_get_file_content, lib.json_to_lua)
