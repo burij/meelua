@@ -1,6 +1,6 @@
-# Milua
+# Meelua
 
-Milua is a lightweight Lua framework designed for developers with functional mindset. Milua can be best (but not exclusivly) used within the NixOS environment. It provides essential tools and structure to streamline Lua development, making it easier to manage configurations, dependencies, and the development workflow.
+Meelua is a lightweight Lua framework designed for developers with functional mindset. Milua can be best (but not exclusivly) used within the NixOS environment. It provides essential tools and structure to streamline Lua development, making it easier to manage configurations, dependencies, and the development workflow.
 
 ## Features
 - Simple setup and configuration for Lua projects.
