@@ -1,16 +1,17 @@
 # Meelua
 
-Meelua is a lightweight Lua framework designed for developers with functional mindset. Meelua can be best (but not exclusivly) used within the NixOS environment. It provides essential tools and structure to streamline Lua development, making it easier to manage configurations, dependencies, and the development workflow.
+Meelua is a lightweight Lua framework designed for developers with a functional mindset. It's optimized for use within the NixOS environment but can be adapted for other systems. Meelua provides essential tools and structure to streamline Lua development, making it easier to manage configurations, dependencies, and development workflows.
 
 ## Features
-- Simple setup and configuration for Lua projects.
-- Compatible with NixOS.
-- Extensible and modular, making it suitable for various Lua-based projects.
-- Contains utilities and helper libraries to enhance Lua development.
+- Simple setup and configuration for Lua projects
+- Seamless integration with NixOS
+- Extensible and modular architecture suitable for various Lua-based projects
+- Comprehensive utilities and helper libraries to enhance Lua development
+- Functional programming approach with strict separation of app logic, functions, and data
 
 ## Requirements
 
-- **NixOS**: This project is tailored for NixOS. If you're on a different OS, you can run the `shell.nix` from the project folder to set up an isolated Nix environment.
+- **NixOS**: (recommended): Meelua is tailored for NixOS.
 
   OR
   
@@ -18,18 +19,18 @@ Meelua is a lightweight Lua framework designed for developers with functional mi
 
 ## Installation
 
-To set up the development environment using Nix, simply run:
+Set up the development environment using Nix:
 
 ```bash
 nix-shell
 ```
-This will create an isolated environment with all necessary dependencies.
+This creates an isolated environment with all necessary dependencies.
 
 ## Usage
 Clone the repository:
 
 ```
-git clone https://github.com/your-username/milua.git
+git clone https://github.com/your-username/meelua.git
 cd milua
 ```
 
@@ -45,15 +46,12 @@ Run the main Lua script:
 ```
 run
 ```
-or if you're not using nix:
+Or without Nix:
 ```
 lua main.lua
 ```
 
 This will execute the main logic of the Milua framework.
-
-## Configuration
-You can customize the framework through the config.lua file. This configuration file allows you to define your project-specific settings, such as paths, environment variables, and other Lua-based configurations.
 
 ## Folder Structure
 - main.lua: The entry point of the application.
@@ -63,8 +61,21 @@ You can customize the framework through the config.lua file. This configuration 
 - shell.nix: Nix configuration for setting up the development environment.
 - draft.lua: A draft script for experimenting with features.
 
+## Configuration
+Customize your development environment through the shell.nix file. Define project-specific settings, packages, environment variables, and terminal aliases.
+
+## Development aproach
+
+Meelua follows a functional programming paradigm with clear separation of concerns:
+- App logic, functions, and data are strictly separated
+- Function calls are centralized in main.lua
+- Global functions are aliased with lib. prefix and stored in a metatable
+- Impure functions are prefixed with do_
+- Static variables are stored in the config table
+- Simple type enforcement system available via lib.types
+
 ## Warning
-If you are using Milua on NixOS and entering the development envirement via `nix-shell` you're lib.lua and external packages will be updated. Breaking changes are possible until 1.0 release. If you want to avoid it, comment out shell hooks inside shell.nix.
+When using Meelua on NixOS with nix-shell, lib.lua and external packages will be updated. Breaking changes are possible until the 1.0 release. To prevent updates, comment out shell hooks in shell.nix.
 
 ## Contributing
 We welcome contributions! To get started:
