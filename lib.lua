@@ -171,7 +171,7 @@ end
 
 function lib.do_sleep(x)
     lib.types( x, 'number' )
-	sleep_time = 1
+	sleep_time = x
     local function get_time()
         return os.clock()
     end
