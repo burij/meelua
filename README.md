@@ -30,7 +30,7 @@ This creates an isolated environment with all necessary dependencies.
 Clone the repository:
 
 ```
-git clone https://github.com/your-username/meelua.git
+git clone https://github.com/burij/meelua.git
 cd milua
 ```
 
