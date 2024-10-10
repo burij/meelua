@@ -5,13 +5,15 @@ local conf, lib = require( "conf" ), require( "lib" )
 --------------------------------------------------------------------------------
 -- lib
 
--- function lib.do_gui(x, y, z)
---     lib.types(x, "function")
---     lib.types(y, "function")
---     lib.types(z, "function")
---     function love.load() x end
---     function love.update(dt) y end
---     function love.draw() z end
+-- function lib.do_gui()
+--    local callbacks = {
+--        load = lib.load,
+--        update = lib.update,
+--        draw = lib.draw
+--    }
+--    for name, func in pairs(callbacks) do
+--        love[name] = func
+--    end
 -- end
 
 --------------------------------------------------------------------------------
