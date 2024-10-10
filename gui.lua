@@ -1,16 +1,24 @@
 local conf, lib = require( "conf" ), require( "lib" )
 
 --------------------------------------------------------------------------------
--- conf
+
+function love.load()
+    love.window.setMode(1024, 720, conf.window_flags)
+    love.window.setTitle(conf.window_title)
+end
 
 --------------------------------------------------------------------------------
--- lib
+
+function love.update(dt)
+    
+end
 
 --------------------------------------------------------------------------------
 
-local function application()
-    lib.do_print_table(lib)
-    -- local gui = require( "gui" )
-end application()
+function love.draw()
+    
+end
 
+--------------------------------------------------------------------------------
 
+return love

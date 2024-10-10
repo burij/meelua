@@ -1,17 +1,17 @@
 conf = {}
 --------------------------------------------------------------------------------
-
--- function love.conf(t)
--- 	t.title             = "Demo App"
--- 	t.author	            = "Rock star"
---     t.window.resizable  = true
--- end
-
---------------------------------------------------------------------------------
 conf.custom = {
     default_value = 30
 }
 
+conf.window_flags = {
+    resizable=false,
+    vsync=true,
+    minwidth=400,
+    minheight=300
+}
+
+conf.window_title = "meelua"
 
 --------------------------------------------------------------------------------
 return conf
