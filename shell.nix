@@ -6,7 +6,7 @@ in
 pkgs.mkShell {
 	packages = with pkgs; [
 		wget
-		-- love
+		# love
 		(lua5_4.withPackages(ps: with ps; [
 			luarocks
 		]))
@@ -15,7 +15,7 @@ pkgs.mkShell {
 	shellHook = ''
 		wget -O lib.lua https://raw.githubusercontent.com/burij/meelua/main/lib.lua
 		alias run='lua main.lua'
-		-- alias run='love .'
+		# alias run='love .'
 		alias test='lua draft.lua'
 		luarocks install inspect --tree ./pkgs
     		luarocks install dkjson --tree ./pkgs
