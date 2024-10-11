@@ -288,17 +288,6 @@ end
 
 --------------------------------------------------------------------------------
 
-function lib.do_gui()
-   local callbacks = {
-       load = lib.load,
-       update = lib.update,
-       draw = lib.draw
-   }
-   for name, func in pairs(callbacks) do
-       love[name] = func
-   end
-end
 
---------------------------------------------------------------------------------
 
 return lib
