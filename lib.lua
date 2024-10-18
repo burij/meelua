@@ -41,8 +41,7 @@ end
 
 --------------------------------------------------------------------------------
 
-function lib.do_user_input(a, f)
-	f()
+function lib.do_user_input(a)
 	local question = a
 	print(question)
 	local answer = io.read()
