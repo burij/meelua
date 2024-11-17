@@ -1,4 +1,76 @@
 local lib = {}
+--------------------------------------------------------------------------------
+
+function lib.do_cmd_list( x )
+    lib.types( x, 'table' ) -- each string will be executed
+    for k, v in pairs(x) do
+        if type(v) ~= "table" then
+            lib.do_if_true(x[k], true)
+        else
+            x[k] = v
+        end
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function lib.extend_table(x, y, z)
+    lib.types( x, 'table' )
+    lib.types( y, 'string' ) -- prefix for each string in x
+    lib.types( z, 'string' ) -- suffix for each string in x
+    local tbl = {}
+    for k, v in pairs(x) do
+        if type(v) ~= "table" then
+            tbl[k] = y .. tostring(v) .. z
+        else
+            tbl[k] = v
+        end
+    end
+    return tbl
+end
+
+--------------------------------------------------------------------------------
+
+function lib.command_and_capture(x, y)
+    lib.types(x, "string") -- command, which will be executed
+    lib.types(y, "string") -- value, which be returned, if there is no output
+    local handle = io.popen(x)
+    local str = ""
+    if handle then
+        str = handle:read("*a")
+        handle:close()
+    end
+    if str == "" then
+        str = y
+    end
+    str = string.gsub(str, "\n$", "")
+    return str
+end
+
+--------------------------------------------------------------------------------
+
+function lib.do_if_true(x, y)
+    lib.types( x, "string" ) -- command, which will be executed, if true
+    lib.types( y, "boolean" )
+    if y then
+        local output = lib.command_and_capture( x, "done" )
+        print(x .. "\n" .. output)
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function lib.inject_var(x, y, z)
+    lib.types( x, "string" )
+    lib.types( y, "string" ) -- looks for it in x
+    lib.types( z, "string" ) -- and replaces y with that
+    local str = x
+    if str:find(y, 1, true) then
+        return str:gsub(y, z)
+    else
+        return str
+    end
+end
 
 --------------------------------------------------------------------------------
 
