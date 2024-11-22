@@ -1,4 +1,5 @@
 local lib = {}
+-- https://lua-docs.vercel.app
 --------------------------------------------------------------------------------
 
 function lib.do_cmd_list( x )
