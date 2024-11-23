@@ -2,6 +2,18 @@ local lib = {}
 -- https://lua-docs.vercel.app
 --------------------------------------------------------------------------------
 
+function lib.do_cmd(x)
+    lib.types( x, 'string' )
+    print(x)
+    local handle = io.popen(x)
+    local str = handle:read("*a")
+    handle:close()
+    print(str)
+    return str
+end
+
+--------------------------------------------------------------------------------
+
 function lib.do_write_file (x, y)
     lib.types( x, 'string' ) -- filename
     lib.types( y, 'string' ) -- content to write
