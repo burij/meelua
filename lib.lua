@@ -2,6 +2,20 @@ local lib = {}
 -- https://lua-docs.vercel.app
 --------------------------------------------------------------------------------
 
+function lib.do_write_file (x, y)
+    lib.types( x, 'string' ) -- filename
+    lib.types( y, 'string' ) -- content to write
+    local file = io.open(x, "w")
+    if file then
+        file:write(y)
+        file:close()
+    else
+        error("Unable to open file for writing: " .. x)
+    end
+end
+
+--------------------------------------------------------------------------------
+
 function lib.do_cmd_list( x )
     lib.types( x, 'table' ) -- each string will be executed
     for k, v in pairs(x) do
@@ -100,7 +114,7 @@ end
 
 --------------------------------------------------------------------------------
 
-function lib.do_write_file (filename, a)
+function lib.do_write_file_legacy (filename, a)
     file = io.open(filename, "w")
 	file:write(a)
     file:close()
