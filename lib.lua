@@ -2,6 +2,60 @@ local lib = {}
 -- https://lua-docs.vercel.app
 --------------------------------------------------------------------------------
 
+function lib.compose_list(...)
+-- glues strings and tables to a new table
+    local tbl = {}
+    for _, v in ipairs({...}) do
+        if type(v) == "string" then
+            table.insert(tbl, v)
+        elseif type(v) == "table" then
+            for _, str in ipairs(v) do
+                if type(str) ~= "string" then
+                    error("incorrect table format detected")
+                end
+                table.insert(tbl, str)
+            end
+        else
+            error("all arguments must be either strings or tables")
+        end
+    end
+    return tbl
+end
+
+--------------------------------------------------------------------------------
+
+function lib.skipcmd_str_if_false(x, y)
+-- adds skip bash command to a list, if condition false
+    lib.types( x, "string" )
+    lib.types( y, "boolean" )
+    if y then
+        var = x
+    else
+        var = ": || skipping " .. x
+    end
+    return var
+end
+
+--------------------------------------------------------------------------------
+
+function lib.skipcmd_tbl_if_false(x, y)
+-- adds skip bash command to a list, if condition false
+    lib.types(x, "table")
+    lib.types(y, "boolean")
+    local tbl = {}
+    for _, str in ipairs(x) do
+        lib.types(str, "string")
+        if y then
+            table.insert(tbl, str)
+        else
+            table.insert(tbl, ": || skipping " .. str)
+        end
+    end
+    return tbl
+end
+
+--------------------------------------------------------------------------------
+
 function lib.do_cmd(x)
     lib.types( x, 'string' )
     print(x)
