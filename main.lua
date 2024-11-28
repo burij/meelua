@@ -1,16 +1,15 @@
 local conf, lib = require( "conf" ), require( "lib" )
+-- conf
+
 
 --------------------------------------------------------------------------------
--- conf
+local function application()
+    lib.do_print_table(lib)
+end 
 
 --------------------------------------------------------------------------------
 -- lib
 
+
 --------------------------------------------------------------------------------
-
-local function application()
-    lib.do_print_table(lib)
-    local gui = require( "gui" )
-end application()
-
-
+application()
