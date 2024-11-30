@@ -82,7 +82,7 @@ end
 
 --------------------------------------------------------------------------------
 
-function lib.do_cmd_list( x )
+function lib.do_cmd_list(x)
     lib.types( x, 'table' ) -- each string will be executed
     for k, v in pairs(x) do
         if type(v) ~= "table" then
@@ -254,44 +254,6 @@ end
 
 --------------------------------------------------------------------------------
 
-function lib.map(x, y)
-    lib.types( x, 'table' )
-    lib.types( y, 'function' )
-    local tbl = {}
-    for k, v in pairs(x) do
-        tbl[k] = y(v)
-    end
-    return tbl
-end
-
---------------------------------------------------------------------------------
-
-function lib.filter(x, y)
-    lib.types( x, 'table' )
-    lib.types( y, 'boolean' )
-    local tbl = {}
-    for k, v in pairs(x) do
-        if y(v) then
-            tbl[k] = v
-        end
-    end
-    return tbl
-end
-
---------------------------------------------------------------------------------
-
-function lib.reduce(x, y, var)
-    lib.types( x, 'table' )
-    lib.types( y, 'function' )
-    local accumulator = var
-    for k, v in pairs(x) do
-        accumulator = y(accumulator, v)
-    end
-    return accumulator
-end
-
---------------------------------------------------------------------------------
-
 function lib.get_line(x)
 	if type(x) == "number" then
     	a = string.rep("'", x)
@@ -439,6 +401,72 @@ function lib.xml_to_table(a)
 end
 
 --------------------------------------------------------------------------------
+
+function lib.map(x, y)
+-- call function on every element of a table
+    lib.types( x, "table" )
+    lib.types( y, "function" )
+    local tbl = {}
+    local is_list = (#x > 0)
+    if is_list then
+        for i, v in ipairs(x) do
+            tbl[i] = y(v)
+        end
+    else
+        for k, v in pairs(x) do
+            tbl[k] = y(v)
+        end
+    end
+    return tbl
+end
+
+
+--------------------------------------------------------------------------------
+
+function lib.filter(x, y)
+-- filters table elements based on predicate function
+    lib.types(x, 'table')
+    lib.types(y, 'function')
+    local tbl = {}
+    local is_list = (#x > 0)
+    if is_list then
+        for i, v in ipairs(x) do
+            if y(v) then
+                table.insert(tbl, v)
+            end
+        end
+    else
+        for k, v in pairs(x) do
+            if y(v) then
+                tbl[k] = v
+            end
+        end
+    end
+    return tbl
+end
+
+--------------------------------------------------------------------------------
+
+function lib.reduce(x, y, var)
+-- reduces table to single value using accumulator function
+    lib.types(x, 'table')
+    lib.types(y, 'function')
+    local is_list = (#x > 0)
+    local accumulator = var
+    if is_list then
+        for _, v in ipairs(x) do
+            accumulator = y(accumulator, v)
+        end
+    else
+        for _, v in pairs(x) do
+            accumulator = y(accumulator, v)
+        end
+    end
+    return accumulator
+end
+
+--------------------------------------------------------------------------------
+
 
 
 
