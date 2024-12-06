@@ -1,5 +1,21 @@
 local lib = {}
 -- https://lua-docs.vercel.app
+
+
+--------------------------------------------------------------------------------
+
+
+function lib.msg(x)
+-- debug function, outputs any type and returns type TODO move to lib.lua
+    if type(x) == "table" then
+        lib.do_print_table(x)
+    else
+        print(x)
+    end
+    return type(x)
+end
+
+
 --------------------------------------------------------------------------------
 
 function lib.compose_list(...)
