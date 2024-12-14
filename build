@@ -5,3 +5,5 @@ cp ./lib.lua ./export/
 cp ./conf.lua ./export/
 cp ./gui.lua ./export/
 cp -R ./pkgs/share/lua/5.4/. ./export/
+cp ./run ./export/
+chmod +x ./export/run
