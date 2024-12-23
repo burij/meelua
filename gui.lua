@@ -1,4 +1,4 @@
-local conf, lib = require( "conf" ), require( "lib" )
+local conf, f = require( "conf" ), require( "lib" )
 love = love or {}
 --------------------------------------------------------------------------------
 -- config
