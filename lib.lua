@@ -1,12 +1,79 @@
 local f = {}
 -- https://lua-docs.vercel.app
 
+--------------------------------------------------------------------------------
+
+function f.do_draw_menu(x)
+    f.types( x, "table" )
+    local function menu()
+        f.do_clear_screen()
+        io.write("\r" .. x.title .. "\n")
+        for i, option in ipairs(x.options) do
+            io.write("\r")
+            if i == x.selected then
+                io.write("> " .. option.text .. "  \n")
+            else
+                io.write("  " .. option.text .. "  \n")
+            end
+        end
+        io.write("\r\n" .. x.message .. "\n")
+        io.flush()
+    end
+    os.execute("stty raw -echo")
+    while true do
+        menu()
+        local char = io.read(1)
+        if char == '\27' then
+            local bracket = io.read(1)
+            if bracket == '[' then
+                local arrow = io.read(1)
+                if arrow == 'A' then  -- Up arrow
+                    x.selected = x.selected - 1
+                    if x.selected < 1 then x.selected = #x.options end
+                elseif arrow == 'B' then  -- Down arrow
+                    x.selected = x.selected + 1
+                    if x.selected > #x.options then x.selected = 1 end
+                end
+            end
+        elseif char == "\n" or char == "\r" then  -- Enter key
+            f.do_clear_screen()
+            os.execute("stty cooked echo")
+            x.options[x.selected].action()
+            if x.selected ~= #x.options then  -- If not Exit
+                print("\nPress Enter to continue...")
+                io.read()
+                os.execute("stty raw -echo")
+            end
+        elseif char == "\3" then  -- Ctrl+C
+            os.execute("stty cooked echo")  -- Reset terminal mode
+            os.exit()
+        end
+    end
+end
 
 --------------------------------------------------------------------------------
 
+function f.do_clear_screen()
+    if package.config:sub(1,1) == '\\' then -- Windows
+        os.execute("cls")
+    else -- Unix-like
+        os.execute("clear")
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function f.reload_module(x)
+-- reloads modules during runtime
+    f.types( x, "string" ) -- module name
+    package.loaded[x] = nil
+    return require(x)
+end
+
+--------------------------------------------------------------------------------
 
 function f.msg(x)
--- debug function, outputs any type and returns type TODO move to f.lua
+-- debug function, outputs any data type and returns type
     if type(x) == "table" then
         f.do_print_table(x)
     else
@@ -14,7 +81,6 @@ function f.msg(x)
     end
     return type(x)
 end
-
 
 --------------------------------------------------------------------------------
 
