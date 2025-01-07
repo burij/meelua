@@ -3,6 +3,60 @@ local f = {}
 
 --------------------------------------------------------------------------------
 
+function f.tbl_div(x, y)
+-- Creates a div table between 2 lists
+    f.types( x, "table" ) -- original table
+    f.types( y, "table" ) -- new table
+    local tbl = { added = {}, removed = {} }     
+    -- Helper function for deep comparison
+    local function deep_equals(a, b)
+        if type(a) ~= type(b) then return false end
+        if type(a) ~= "table" then return a == b end          
+        -- Check if tables have same length
+        if #a ~= #b then return false end            
+        -- For array-like tables, compare by index
+        for i = 1, #a do
+            if not deep_equals(a[i], b[i]) then return false end
+        end           
+        return true
+    end
+    -- Find added elements (in y but not in x)
+    for i = 1, #y do
+        local value = y[i]
+        local found = false
+        for j = 1, #x do
+            local orig_value = x[j]
+            if deep_equals(value, orig_value) then
+                found = true
+                break
+            end
+        end
+        if not found then
+            table.insert(tbl.added, value)
+        end
+    end             
+    -- Find removed elements (in x but not in y)
+    for i = 1, #x do
+        local value = x[i]
+        if value ~= nil then  -- Skip nil values
+            local found = false
+            for j = 1, #y do
+                local new_value = y[j]
+                if deep_equals(value, new_value) then
+                    found = true
+                    break
+                end
+            end
+            if not found then
+                table.insert(tbl.removed, value)
+            end
+        end
+    end       
+    return tbl
+end
+
+--------------------------------------------------------------------------------
+
 function f.do_draw_menu(x)
     f.types( x, "table" )
     local function menu()
