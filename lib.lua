@@ -3,6 +3,20 @@ local f = {}
 
 --------------------------------------------------------------------------------
 
+function f.flatten_table(x)
+    -- stores values of a nested table in simple list
+    f.types( x, "table" ) -- nested ( k = v ) table
+    local tbl = {}
+    for _, t in pairs(x) do
+        for _, v in pairs(t) do
+            table.insert(tbl, v)
+        end
+    end
+    return tbl
+end
+
+--------------------------------------------------------------------------------
+
 function f.tbl_div(x, y)
 -- Creates a div table between 2 lists
     f.types( x, "table" ) -- original table
