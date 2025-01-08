@@ -31,7 +31,7 @@ Clone the repository:
 
 ```
 git clone https://github.com/burij/meelua.git
-cd milua
+cd meelua
 ```
 
 
