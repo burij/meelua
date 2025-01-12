@@ -302,6 +302,22 @@ end
 --------------------------------------------------------------------------------
 
 function f.inject_var(x, y, z)
+-- replaces string withanother sting inside a string, depricated use f.replace
+    f.types(x, "string")
+    f.types(y, "string")   -- looks for it in x
+    f.types(z, "string")   -- and replaces y with that
+    local str = x
+    if str:find(y, 1, true) then
+        return str:gsub(y, z)
+    else
+        return str
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function f.replace(x, y, z)
+-- replaces string withanother sting inside a string
     f.types(x, "string")
     f.types(y, "string")   -- looks for it in x
     f.types(z, "string")   -- and replaces y with that
