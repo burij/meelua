@@ -317,10 +317,10 @@ end
 --------------------------------------------------------------------------------
 
 function f.replace(x, y, z)
--- replaces string withanother sting inside a string
+    -- replaces string withanother sting inside a string
     f.types(x, "string")
-    f.types(y, "string")   -- looks for it in x
-    f.types(z, "string")   -- and replaces y with that
+    f.types(y, "string") -- looks for it in x
+    f.types(z, "string") -- and replaces y with that
     local str = x
     if str:find(y, 1, true) then
         return str:gsub(y, z)
@@ -408,6 +408,7 @@ end
 --------------------------------------------------------------------------------
 
 function f.do_get_file_content(filename)
+    -- deprecated, use f.read_file instead
     local file = io.open(filename, "r")
     if file then
         content = file:read("*all")
@@ -419,6 +420,21 @@ function f.do_get_file_content(filename)
     return b
 end
 
+--------------------------------------------------------------------------------
+
+function f.read_file(x)
+    -- returns content of given file
+    f.types( x, "string" ) -- path to file
+    local file = io.open(x, "r")
+    if file then
+        content = file:read("*all")
+        file:close()
+    else
+        content = filename .. " not found or not readable!"
+    end
+    local str = content
+    return str
+end
 --------------------------------------------------------------------------------
 
 function f.do_print_table(x)
