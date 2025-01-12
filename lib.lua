@@ -3,6 +3,16 @@ local f = {}
 
 --------------------------------------------------------------------------------
 
+function f.read(x)
+-- asks question and stores user input in a variable
+    f.types( x, "string" ) -- question
+	print(x)
+	local var = io.read()
+    return var
+end
+
+--------------------------------------------------------------------------------
+
 function f.flatten_table(x)
     -- stores values of a nested table in simple list
     f.types( x, "table" ) -- nested ( k = v ) table
