@@ -1,30 +1,36 @@
 local conf, f = require( "conf" ), require( "lib" )
+--------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
 local function application()
+    local menu = {}
+    menu.title = conf.window_title
+    menu.message = "Use arrow keys to navigate, 'enter' to select"
+    menu.selected = 1
+    menu.options = {}
 
-    local function run_script()
-        conf = f.reload_module( "conf" )
-        f.msg(f)
-    end
+    menu.options[1] = {
+        text = "Avaible functions",
+        action = function()
+            conf = f.reload_module( "conf" )
+            f.msg(f)
+        end
+    }
+
+    menu.options[2] = {
+        text = "Settings",
+        action = function()
+            os.execute("nano ./conf.lua")
+        end
+    }
     
-    local function edit_conf()
-        os.execute("nano ./conf.lua")
-    end
-    
-    local menu = {
-        title = conf.window_title,
-        message = "Use arrow keys to navigate, 'enter' to select",
-        options = {
-            { text = "Avaible functions", action = run_script },
-            { text = "Settings", action = edit_conf },
-            { text = "Exit", action = function() os.exit() end }
-        },
-        selected = 1
-    } 
+    menu.options[3] = {
+        text = "Exit",
+        action = function() os.exit() end
+    }
+
     f.do_draw_menu(menu)
 end
-
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
