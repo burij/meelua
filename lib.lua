@@ -560,21 +560,23 @@ end
 
 --------------------------------------------------------------------------------
 
-function f.db_request(filename)
+function f.read_json(filename)
+    -- imports json to a lua table
     f.types(filename, "string")
     local tbl = {}
-    local func = f.compose(f.do_get_file_content, f.json_to_lua)
+    local func = f.compose(f.read_file, f.json_to_lua)
     local tbl = func(filename)
     return tbl
 end
 
 --------------------------------------------------------------------------------
 
-function f.do_db_post(filename, x)
+function f.write_json(x, filename)
+    -- exports table to json file
     f.types(filename, "string")
     f.types(x, "table")
     local json_string = f.lua_to_json(x)
-    f.do_write_file(filename, json_string)
+    f.write_file(filename, json_string)
 end
 
 --------------------------------------------------------------------------------
