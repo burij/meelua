@@ -2,6 +2,19 @@ local f = {}
 -- https://lua-docs.vercel.app
 --------------------------------------------------------------------------------
 
+f.do_write_file, f.write_file = function(x, y)
+    f.types(x, 'string')   -- filename
+    f.types(y, 'string')   -- content to write
+    local file = io.open(x, "w")
+    if file then
+        file:write(y)
+        file:close()
+    else
+        error("Unable to open file for writing: " .. x)
+    end
+end
+--------------------------------------------------------------------------------
+
 function f.types(x, y)
     -- returns var x, if type is matching y
     local special_types = {
@@ -106,7 +119,7 @@ end
 
 --------------------------------------------------------------------------------
 
-function f.read(x)
+f.read, f.do_user_input = function(x)
     -- asks question and stores user input in a variable
     f.types(x, "string")   -- question
     print(x)
@@ -331,20 +344,6 @@ end
 
 --------------------------------------------------------------------------------
 
-function f.do_write_file(x, y)
-    f.types(x, 'string')   -- filename
-    f.types(y, 'string')   -- content to write
-    local file = io.open(x, "w")
-    if file then
-        file:write(y)
-        file:close()
-    else
-        error("Unable to open file for writing: " .. x)
-    end
-end
-
---------------------------------------------------------------------------------
-
 function f.do_cmd_list(x)
     f.types(x, 'table')   -- each string will be executed
     for k, v in pairs(x) do
@@ -404,22 +403,7 @@ end
 
 --------------------------------------------------------------------------------
 
-function f.inject_var(x, y, z)
--- replaces string withanother sting inside a string, depricated use f.replace
-    f.types(x, "string")
-    f.types(y, "string")   -- looks for it in x
-    f.types(z, "string")   -- and replaces y with that
-    local str = x
-    if str:find(y, 1, true) then
-        return str:gsub(y, z)
-    else
-        return str
-    end
-end
-
---------------------------------------------------------------------------------
-
-function f.replace(x, y, z)
+f.replace, f.inject_var = function(x, y, z)
     -- replaces string withanother sting inside a string
     f.types(x, "string")
     f.types(y, "string") -- looks for it in x
@@ -455,30 +439,6 @@ function f.conditional_prefix(condition, a, b)
         c = b
     end
     return c
-end
-
---------------------------------------------------------------------------------
-
-function f.do_write_file_legacy(filename, a)
-    file = io.open(filename, "w")
-    file:write(a)
-    file:close()
-end
-
---------------------------------------------------------------------------------
-
-function f.true_or_not(a, b)
-    return a == b
-end
-
---------------------------------------------------------------------------------
-
-function f.do_user_input(a)
-    local question = a
-    print(question)
-    local answer = io.read()
-    local a = answer
-    return a
 end
 
 --------------------------------------------------------------------------------
@@ -579,7 +539,8 @@ end
 --------------------------------------------------------------------------------
 
 function f.do_sleep(x)
-    f.types(x, 'number')
+    -- simple waiting
+    f.types(x, 'number') -- number of seconds
     sleep_time = x
     local function get_time()
         return os.clock()
