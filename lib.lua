@@ -2,7 +2,17 @@ local f = {}
 -- https://lua-docs.vercel.app
 --------------------------------------------------------------------------------
 
-f.do_write_file, f.write_file = function(x, y)
+function f.globalize(x)
+    -- loads content of a module to a global space
+    f.types( x, "dictionary" ) -- modul which needs to be loaded globaly
+    for k, v in pairs(x) do
+        _G[k] = v
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function f.write_file(x, y)
     f.types(x, 'string')   -- filename
     f.types(y, 'string')   -- content to write
     local file = io.open(x, "w")
@@ -13,6 +23,7 @@ f.do_write_file, f.write_file = function(x, y)
         error("Unable to open file for writing: " .. x)
     end
 end
+f.do_write_file = f.write_file
 --------------------------------------------------------------------------------
 
 function f.types(x, y)
@@ -119,13 +130,14 @@ end
 
 --------------------------------------------------------------------------------
 
-f.read, f.do_user_input = function(x)
+function f.read(x)
     -- asks question and stores user input in a variable
     f.types(x, "string")   -- question
     print(x)
     local var = io.read()
     return var
 end
+f.do_user_input = f.read
 
 --------------------------------------------------------------------------------
 
@@ -403,7 +415,7 @@ end
 
 --------------------------------------------------------------------------------
 
-f.replace, f.inject_var = function(x, y, z)
+function f.replace(x, y, z)
     -- replaces string withanother sting inside a string
     f.types(x, "string")
     f.types(y, "string") -- looks for it in x
@@ -415,6 +427,7 @@ f.replace, f.inject_var = function(x, y, z)
         return str
     end
 end
+f.inject_var = f.replace
 
 --------------------------------------------------------------------------------
 
