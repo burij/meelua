@@ -2,6 +2,22 @@ local f = {}
 -- https://lua-docs.vercel.app
 --------------------------------------------------------------------------------
 
+function f.select(x, y, z)
+    -- returns one of variables, depending on condition
+    f.types(x, "boolean") -- condition
+    f.types(y, "any") -- option 1
+    f.types(z, "any") -- optiin 2
+    local var
+    if x then 
+        var = y
+    else 
+        var = z
+    end
+    return var
+end    
+
+--------------------------------------------------------------------------------
+
 function f.globalize(x)
     -- loads content of a module to a global space
     f.types( x, "dictionary" ) -- modul which needs to be loaded globaly
