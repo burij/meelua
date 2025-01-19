@@ -42,6 +42,148 @@ end
 f.do_write_file = f.write_file
 --------------------------------------------------------------------------------
 
+function f.is_any(x)
+    if x == nil then
+        error("expected a value, got nil", 2)
+    end
+    return x
+end
+
+--------------------------------------------------------------------------------
+
+function f.is_path(x)
+    if type(x) ~= "string" then
+        error("expected a path string, got " .. type(x), 2)
+    end
+    local file = io.open(x, "r")
+    if not file then
+        error("path does not exist or is not accessible: " .. x, 2)
+    end
+    file:close()
+    return x
+end
+
+--------------------------------------------------------------------------------
+
+function f.is_email(x)
+    if type(x) ~= "string" then
+        error("expected an email string, got " .. type(x), 2)
+    end
+    local pattern = "^[%w%.%%%+%-]+@[%w%.%%%+%-]+%.%w+$"
+    if not string.match(x, pattern) then
+        error("invalid email format: " .. x, 2)
+    end
+    return x
+end
+
+--------------------------------------------------------------------------------
+
+function f.is_url(x)
+    if type(x) ~= "string" then
+        error("expected a URL string, got " .. type(x), 2)
+    end
+    local pattern = "^https?://[%w%.%%%+%-]+%.[%w%.%%%+%-]+[%w%.%%%+%-/%?=&#]+$"
+    if not string.match(x, pattern) then
+        error("invalid URL format: " .. x, 2)
+    end
+    return x
+end
+
+--------------------------------------------------------------------------------
+
+function f.is_list(x)
+    if type(x) ~= "table" then
+        error("expected a list, got " .. type(x), 2)
+    end
+    local len = #x
+    for k, _ in pairs(x) do
+        local is_not_number = type(k) ~= "number"
+        local is_out_of_bounds = k > len or k <= 0
+        local is_not_integer = math.floor(k) ~= k
+        if is_not_number or is_out_of_bounds or is_not_integer then
+            error("expected a list, got " .. type(x), 2)
+        end
+    end
+    return x
+end
+
+--------------------------------------------------------------------------------
+
+function f.is_dictionary(x)
+    if type(x) ~= "table" then
+        error("expected a dictionary, got " .. type(x), 2)
+    end
+    local has_non_numeric_key = false
+    local numeric_keys = {}
+    for k, _ in pairs(x) do
+        if type(k) ~= "number" then
+            has_non_numeric_key = true
+            break
+        end
+        table.insert(numeric_keys, k)
+    end
+    if not has_non_numeric_key and #numeric_keys > 0 then
+        table.sort(numeric_keys)
+        for i = 1, #numeric_keys do
+            if numeric_keys[i] ~= i then
+                has_non_numeric_key = true
+                break
+            end
+        end
+        if not has_non_numeric_key then
+            error("expected a dictionary, got " .. type(x), 2)
+        end
+    end
+    return x
+end
+
+--------------------------------------------------------------------------------
+
+function f.is_boolean(x)
+    if type(x) ~= "boolean" then
+        error("expected a boolean, got " .. type(x), 2)
+    end
+    return x
+end
+
+--------------------------------------------------------------------------------
+
+function f.is_string(x)
+    if type(x) ~= "string" then
+        error("expected a string, got " .. type(x), 2)
+    end
+    return x
+end
+
+--------------------------------------------------------------------------------
+
+function f.is_number(x)
+    if type(x) ~= "number" then
+        error("expected a number, got " .. type(x), 2)
+    end
+    return x
+end
+
+--------------------------------------------------------------------------------
+
+function f.is_table(x)
+    if type(x) ~= "table" then
+        error("expected a table, got " .. type(x), 2)
+    end
+    return x
+end
+
+--------------------------------------------------------------------------------
+
+function f.is_function(x)
+    if type(x) ~= "function" then
+        error("expected a function, got " .. type(x), 2)
+    end
+    return x
+end
+
+--------------------------------------------------------------------------------
+
 function f.types(x, y)
     -- returns var x, if type is matching y
     local special_types = {
@@ -61,44 +203,19 @@ function f.types(x, y)
     end
 
     if y == "any" then
-        if x == nil then
-            error("expected a value, got nil", 2)
-        end
-        return x
+        return f.is_any(x)
     end
 
     if y == "path" then
-        if type(x) ~= "string" then
-            error("expected a path string, got " .. type(x), 2)
-        end
-        local file = io.open(x, "r")
-        if not file then
-            error("path does not exist or is not accessible: " .. x, 2)
-        end
-        file:close()
-        return x
+        return f.is_path(x)
     end
 
     if y == "email" then
-        if type(x) ~= "string" then
-            error("expected an email string, got " .. type(x), 2)
-        end
-        local pattern = "^[%w%.%%%+%-]+@[%w%.%%%+%-]+%.%w+$"
-        if not string.match(x, pattern) then
-            error("invalid email format: " .. x, 2)
-        end
-        return x
+        return f.is_email(x)
     end
 
     if y == "url" then
-        if type(x) ~= "string" then
-            error("expected a URL string, got " .. type(x), 2)
-        end
-        local pattern = "^https?://[%w%.%%%+%-]+%.[%w%.%%%+%-]+[%w%.%%%+%-/%?=&#]+$"
-        if not string.match(x, pattern) then
-            error("invalid URL format: " .. x, 2)
-        end
-        return x
+        return f.is_url(x)
     end
     
     if type(x) ~= "table" then
@@ -106,39 +223,11 @@ function f.types(x, y)
     end
 
     if y == "list" then
-        local len = #x
-        for k, _ in pairs(x) do
-            local is_not_number = type(k) ~= "number"
-            local is_out_of_bounds = k > len or k <= 0
-            local is_not_integer = math.floor(k) ~= k
-            if is_not_number or is_out_of_bounds or is_not_integer then
-                error("expected a list, got " .. type(x), 2)
-            end
-        end
+        return f.is_list(x)
     end
 
     if y == "dictionary" then
-        local has_non_numeric_key = false
-        local numeric_keys = {}
-        for k, _ in pairs(x) do
-            if type(k) ~= "number" then
-                has_non_numeric_key = true
-                break
-            end
-            table.insert(numeric_keys, k)
-        end
-        if not has_non_numeric_key and #numeric_keys > 0 then
-            table.sort(numeric_keys)
-            for i = 1, #numeric_keys do
-                if numeric_keys[i] ~= i then
-                    has_non_numeric_key = true
-                    break
-                end
-            end
-            if not has_non_numeric_key then
-                error("expected a dictionary, got " .. type(x), 2)
-            end
-        end
+        return f.is_dictionary(x)
     end
 
     return x
@@ -148,7 +237,7 @@ end
 
 function f.read(x)
     -- asks question and stores user input in a variable
-    f.types(x, "string")   -- question
+    types(x, "string")   -- question
     print(x)
     local var = io.read()
     return var
@@ -743,5 +832,4 @@ function f.reduce(x, y, var)
 end
 
 --------------------------------------------------------------------------------
-
 return f
