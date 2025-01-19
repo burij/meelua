@@ -2,7 +2,7 @@ local f = {}
 -- https://lua-docs.vercel.app
 --------------------------------------------------------------------------------
 
-function f.select(x, y, z)
+function f.pick(x, y, z)
     -- returns one of variables, depending on condition
     f.types(x, "boolean") -- condition
     f.types(y, "any") -- option 1
